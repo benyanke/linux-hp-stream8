@@ -1,0 +1,29 @@
+Original guide:
+https://h30434.www3.hp.com/t5/Windows/Linux-on-the-HP-Stream-tablet/td-p/6675613
+
+another helpful doc:
+https://forums.linuxmint.com/viewtopic.php?t=204961
+
+also helpful:
+https://askubuntu.com/questions/392719/32-bit-uefi-boot-support
+
+iso modification:
+https://www.linuxquestions.org/questions/fedora-35/mounting-an-iso-image-and-editing-it-463906/
+
+1) download 32 bit OS
+
+wget http://cdimage.ubuntu.com/ubuntu-budgie/releases/18.04.1/release/ubuntu-budgie-18.04.1-desktop-i386.iso
+
+2) get grub file
+
+
+UNTRUSTED BUT FINE FOR TESTING:
+inspect: https://github.com/jfwells/linux-asus-t100ta/blob/master/boot/bootia32.efi
+
+# wget https://github.com/jfwells/linux-asus-t100ta/raw/master/boot/bootia32.efi
+
+
+
+3) copy boot grub file to /EFI/boot on the downloaded iso
+
+
