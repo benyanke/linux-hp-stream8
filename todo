@@ -27,3 +27,35 @@ inspect: https://github.com/jfwells/linux-asus-t100ta/blob/master/boot/bootia32.
 3) copy boot grub file to /EFI/boot on the downloaded iso
 
 
+
+
+
+
+
+
+
+
+From https://askubuntu.com/questions/392719/32-bit-uefi-boot-support
+
+1) Download ISOs for both 32 bit and 64
+I am using Budgie, since it has some of the best touchscreen support
+
+$ wget http://cdimage.ubuntu.com/ubuntu-budgie/releases/18.04.1/release/ubuntu-budgie-18.04.1-desktop-amd64.iso
+$ wget http://cdimage.ubuntu.com/ubuntu-budgie/releases/18.04.1/release/ubuntu-budgie-18.04.1-desktop-i386.iso
+
+2) Download the multi-arch debian iso
+
+go to: http://cdimage.debian.org/debian-cd/current/multi-arch/
+
+$ wget http://cdimage.debian.org/debian-cd/current/multi-arch/iso-cd/debian-9.5.0-amd64-i386-netinst.iso
+
+
+3) Format USB as FAT
+
+[cont]
+
+
+Alternatively, start with USB with the 32 bit install on it, then copy the EFI file
+
+
+
