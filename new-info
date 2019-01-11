@@ -1,0 +1,153 @@
+https://h30434.www3.hp.com/t5/Windows/Linux-on-the-HP-Stream-tablet/td-p/6675613
+
+Linux on the HP Stream tablet
+
+‎04-28-2018 07:12 PM - edited ‎12-08-2018 06:36 AM
+Product: HP Stream Tablet 7 and 8
+Operating System: Linux
+
+NOTE: This is an update of the original thread that was archived.
+
+ 
+
+Update - 8 November 2018 - Ubuntu 18.10
+
+ I tested Ubuntu 18.10 on my Stream 7 and there is new device support enabled with its 4.18 kernel. The brightness control works now along with the suspend feature.  Battery life seems better also.  18.10 did however eliminate 32-bit support for some distributions such as Ubuntu MATE and Ubuntu Budgie.  32-bit support is still available with Xubuntu and Lubuntu.  
+
+ 
+
+I also discovered that the capability to auto rotate the screen comes with the GNOME desktop.  I installed GNOME to 32-bit Xubuntu and the auto rotation works now.  The instructions I used are below:
+
+ 
+
+I first installed Xubuntu 18.10 32-bit using the 18.04  instructions below and then installed GNOME following the instructions here: https://linuxconfig.org/how-to-install-gnome-on-ubuntu-18-04-bionic-beaver-linux running only the below two commands:
+
+sudo apt install tasksel
+
+sudo tasksel install ubuntu-desktop
+
+When prompted for the default display manager, select gdm3, reboot and the GNOME desktop will launch along with the auto rotate capability.  GNOME also seems to work well with the Stream’s touchscreen automatically launching the onscreen keyboard whenever a text entry screen displays.
+
+ 
+
+======================================================================
+
+ Update - 28 April 2018 - Ubuntu 18.04
+
+I have tested the newly released Ubuntu 18.04 and it is running well on my Stream 7 tablet.  The Wifi, touchscreen, battery indicator and audio continue to work natively (the audio still requires firmware files to be copied after the installation).  Also, the home button (Windows logo button on the Stream) works now, it displays the main menu when pressed. There is a new bug fix where a Wifi connection is no longer required to complete the installation on Ubuntu MATE although it was still required on Ubuntu Budgie. I posted the instructions below:
+
+ 
+
+Installation instructions for Ubuntu 18.04 on the HP Stream tablet
+
+ 
+
+Create a Ubuntu live USB to boot on the Stream's 32-bit UEFI firmware
+
+- Download a 32-bit Ubuntu or Mint image and burn it to a USB drive, I used Ubuntu MATE 18.04 32-bit.
+
+- Also download a current 64-bit Fedora ISO file (since it contains the 32-bit EFI bootloader missing in Ubuntu). I used Fedora 29 Workstation 64-bit.
+
+- Extract the entire EFI directory from the Fedora ISO and copy it to the root of the Ubuntu live USB.
+
+- Also copy the Ubuntu live USB's /boot/grub/loopback.cfg file to /EFI/BOOT, and rename it "grub.cfg" (delete or rename the existing grub.cfg first).
+- Edit the /EFI/BOOT/grub.cfg file like below, changing each "linux" and "initrd" label to "linuxefi" and "initrdefi":
+
+ 
+
+Change this:
+
+ 
+
+     menuentry "Try Ubuntu MATE without installing" {
+     linux /casper/vmlinuz file=/cdrom/preseed/ubuntu-mate.seed boot=casper iso-scan/filename=${iso_path} quiet splash --
+     initrd /casper/initrd.lz
+
+ 
+
+To this:
+
+ 
+
+      menuentry "Try Ubuntu MATE without installing" {
+     linuxefi /casper/vmlinuz file=/cdrom/preseed/ubuntu-mate.seed boot=casper iso-scan/filename=${iso_path} quiet splash --
+     initrdefi /casper/initrd.lz
+
+ 
+
+The USB should now boot on the Stream and give you the option to run Ubuntu or install it.
+
+ 
+
+The Secure Boot option needs to be disabled within the UEFI.  A OTG adapter and powered USB hub with an external mouse and keyboard are required to do the installation. 
+
+ 
+
+ - Power on the tablet and hold down the volume down button or press the F9 key on the keyboard to boot from the USB.
+
+ - Select "Install Ubuntu".  I tried using the "Try Ubuntu without Installing" option and then selecting the desktop icon "Install Ubuntu" but the installation hung for some reason, this seems to be new with 18.04.
+
+ - Connect to the Internet via Wifi if desired although it is no longer required with Ubuntu MATE 18.04. The long standing problem of the grub bootloader installation failing when there is no Internet connection is fixed now.
+
+ - I selected Normal Installation (not minimal).
+
+ - Select both buttons:
+
+    Download Updates (if Wifi is connected)
+    Install third-party software
+
+ - For Installation Type, I selected "Erase Ubuntu 17.10 and Reinstall" since I had a 17.10 installation that I wanted to overwrite. 
+
+ - After the installation, reboot and install the firmware for the audio.  
+
+ 
+
+Audio Firmware installation
+
+Download the zip file from: https://github.com/plbossart/UCM and unzip it to your home directory and use this command to copy it: 
+
+sudo cp -r UCM-master/bytcr-rt5640 /usr/share/alsa/ucm
+
+and then reboot.
+
+Open Sound Preferences and you will see multiple audio devices, you may have to change from the default device to test it and also switch manually between speaker and headphones since the automatic headphone detection does not work.
+
+ 
+
+Rotating the screen manually
+
+The screen can be rotated 90 degrees right or left to landscape mode with these commands, I created a desktop launcher for this:
+
+     xrandr -o right
+     xinput set-prop '7' 'Coordinate Transformation Matrix' 0 1 0 -1 0 1 0 0 1
+
+ 
+
+     xrandr -o left
+     xinput set-prop '7' 'Coordinate Transformation Matrix' 0 -1 1 1 0 0 0 0 1
+
+ 
+
+Note that the device number '7' above is correct only if no devices are plugged into the USB port via OTG. If a USB mouse is plugged in for instance, the number for the Goodix Capacitive TouchScreen would bump up to 8. The xinput command (with no arguments) can be used to display the correct number.
+
+ 
+
+Auto screen rotation
+
+This is not working with 18.04 Ubuntu MATE but it works well on 18.04 Ubuntu Budgie so it seems it should not be hard to add it to MATE.  If anyone has instructions to do that, please post them here. The audio is not working consistently on Budgie or else I would probably switch to it.
+
+ 
+
+Manually adjusting screen brightness
+
+I created a desktop launcher with the below command. The value can be between .2 and 1:
+
+     xrandr --output DSI-1 --brightness .7
+
+ 
+
+Bluetooth
+
+I have not gotten bluetooth working although others have.  If anyone has instructions to do this, please post them here.
+
+   
